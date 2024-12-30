@@ -9,14 +9,6 @@ body {
   padding-bottom: 90px;
 }
 
-input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .layout_padding2 {
   padding-top: 45px;
   padding-bottom: 45px;
@@ -697,4 +689,84 @@ a:focus {
 .footer_section p a {
   color: #222222;
 }
+
+.rounded-form-container {
+    border: 2px solid #512a97;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(86, 37, 161, 0.1); 
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+}
+
+.rounded-form-container h1 {
+    color: #5625a1;
+    font-weight: bold;
+}
+
+.rounded-form-container .btn-primary {
+    background-color: #4b208c;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.rounded-form-container .btn-primary:hover {
+    background-color: #2e0e5f;
+}
+
+.rounded-form-container .form-label {
+    color: #512a97;
+    font-weight: bold;
+}
+
+.rounded-form-container .input-group-text {
+    background-color: #4b208c;
+    border: none;
+    color: white;
+}
+        
+.eye-icon {
+    width: 20px;
+    height: auto;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.table th {
+    background-color: #512a97;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(75, 32, 140, 0.1);
+}
+
+.alert {
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.alert-danger {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.alert-success {
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+
+/* Centrer verticalement les liens de navigation */
+.navbar .nav-item {
+    display: flex;
+    align-items: center;
+}
+
+/* Ajustement de l'espace autour des éléments */
+.navbar-nav .nav-link {
+    margin: 0 10px;
+}
+
+        
 /*# sourceMappingURL=style.css.map */

@@ -1,0 +1,24 @@
+# Ignorer les métadonnées d'Eclipse
+/.metadata/
+
+# Ignorer les dossiers de configuration des serveurs Eclipse/Tomcat
+Servers/
+*.settings/
+*.project
+*.classpath
+
+# Fichiers de configuration spécifiques à Tomcat
+Tomcat v*/**/*
+*.war
+
+# Ignorer les logs du serveur
+logs/
+*.log
+
+# Ignorer les fichiers temporaires et de cache
+tmp/
+work/
+
+# Fichiers temporaires système
+.DS_Store
+Thumbs.db
