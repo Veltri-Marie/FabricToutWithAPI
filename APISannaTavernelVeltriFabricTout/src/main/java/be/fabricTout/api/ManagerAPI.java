@@ -70,8 +70,6 @@ public class ManagerAPI {
     }
 
 
-
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {

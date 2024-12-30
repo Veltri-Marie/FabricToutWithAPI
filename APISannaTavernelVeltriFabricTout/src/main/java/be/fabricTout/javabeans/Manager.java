@@ -71,6 +71,9 @@ public class Manager extends Employee implements Serializable {
 
 	    System.out.println("Manager (JSONObject json): " + json);
 	}
+
+	
+    
    
     // PROPERTIES
     public List<Maintenance> getMaintenances() {

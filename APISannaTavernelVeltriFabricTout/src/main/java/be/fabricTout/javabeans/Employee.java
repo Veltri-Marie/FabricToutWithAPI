@@ -51,19 +51,6 @@ public abstract class Employee extends Person implements Serializable {
         System.out.println("Employee(JSONObject json): " + json);
     }
 
-    
-    public Employee(String serializedString) {
-        super(serializedString); 
-        JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
-        if (json.has("registrationCode")) {
-            setRegistrationCode(json.getString("registrationCode"));
-        }
-        if (json.has("password")) {
-            setPassword(json.getString("password"));
-        }
-        System.out.println("Employee (serializedString): " + json);
-    }
-
 
     // PROPERTIES
     public String getRegistrationCode() {

@@ -47,7 +47,7 @@ public class PurchaserAPI {
                 String json = mapper.writeValueAsString(purchaser);
                 return Response
                         .status(Status.OK)
-                        .entity(purchaser)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -77,7 +77,7 @@ public class PurchaserAPI {
                 String json = mapper.writeValueAsString(purchasers);
                 return Response
                         .status(Status.OK)
-                        .entity(purchasers)
+                        .entity(json)
                         .build();
             } else {
                 return Response

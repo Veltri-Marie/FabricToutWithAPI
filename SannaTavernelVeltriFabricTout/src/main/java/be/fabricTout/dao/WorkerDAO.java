@@ -7,9 +7,13 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import be.fabricTout.javabeans.Purchaser;
 import be.fabricTout.javabeans.Worker;
 
 public class WorkerDAO extends DAO<Worker>{
@@ -46,9 +50,11 @@ public class WorkerDAO extends DAO<Worker>{
 	                    .accept(MediaType.APPLICATION_JSON)
 	                    .get(String.class);
 
-	            ObjectMapper mapper = new ObjectMapper();
-	            worker = mapper.readValue(response, Worker.class);
-	        } catch (IOException e) {
+	            JSONObject json = new JSONObject(response);
+	            System.out.println("Worker findDAO Raw JSON Response: " + json);
+	            
+	            worker = new Worker(json);
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
 	        return worker;
@@ -64,10 +70,14 @@ public class WorkerDAO extends DAO<Worker>{
 	                    .accept(MediaType.APPLICATION_JSON)
 	                    .get(String.class);
 
-	            ObjectMapper mapper = new ObjectMapper();
-	            workers = mapper.readValue(response, new TypeReference<List<Worker>>() {});
+	            JSONArray jsonArray = new JSONArray(response);
+		        for (int i = 0; i < jsonArray.length(); i++) {
+		            JSONObject json = jsonArray.getJSONObject(i);
+		            Worker worker = new Worker(json);
+		            workers.add(worker); 
+		        }
 
-	        } catch (IOException e) {
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
 

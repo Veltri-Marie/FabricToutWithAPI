@@ -39,7 +39,6 @@ public class EmployeeAPI {
             JSONObject json = new JSONObject(employeeJson);
             System.out.println("Received JSON: " + json);
 
-            // Validation des champs requis
             if (!json.has("registrationCode") || !json.has("password")) {
                 return Response
                         .status(Status.BAD_REQUEST)
@@ -49,11 +48,8 @@ public class EmployeeAPI {
 
             String registrationCode = json.getString("registrationCode");
             String password = json.getString("password");
-            System.out.println("registrationCode: " + registrationCode);
-            System.out.println("password: " + password);
 
             int id = Employee.authenticate(employeeDAO, registrationCode, password);
-            System.out.println("Authenticated Employee ID: " + id);
 
             if (id > 0) {
                 return Response

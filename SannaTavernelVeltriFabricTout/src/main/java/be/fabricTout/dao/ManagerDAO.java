@@ -75,8 +75,6 @@ public class ManagerDAO extends DAO<Manager>{
 	                .accept(MediaType.APPLICATION_JSON)
 	                .get(String.class);
 
-	        System.out.println("Manager findAllDAO Raw JSON Response: " + response);
-
 	        if (response == null || response.isEmpty()) {
 	            return managers;
 	        }

@@ -48,7 +48,7 @@ public class WorkerAPI {
                 String json = mapper.writeValueAsString(worker);
                 return Response
                         .status(Status.OK)
-                        .entity(worker)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -72,10 +72,14 @@ public class WorkerAPI {
             List<Worker> workers = Worker.findAll(workerDAO);
 
             if (workers != null && !workers.isEmpty()) {
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(workers);
             	
                 return Response
                         .status(Status.OK)
-                        .entity(workers)
+                        .entity(json)
                         .build();
             } else {
                 return Response

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -51,7 +52,21 @@ public class Worker extends Employee implements Serializable {
 	
 	public Worker(JSONObject json) {
 		super(json);
-		setSite(new Site(json.getJSONObject("site")));
+		if (json.has("site")) {
+	        setSite(new Site(json.getJSONObject("site")));
+	    }
+	    if (json.has("maintenances")) {
+	        JSONArray maintenancesArray = json.optJSONArray("maintenances");
+	        if (maintenancesArray != null) {
+	            List<Maintenance> maintenances = new ArrayList<>();
+	            for (int i = 0; i < maintenancesArray.length(); i++) {
+	                maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
+	            }
+	            setMaintenances(maintenances);
+	        } else {
+	            setMaintenances(new ArrayList<>());
+	        }
+	    }
 		System.out.println("Worker(JSONObject json) " + this);
 	}
 	
