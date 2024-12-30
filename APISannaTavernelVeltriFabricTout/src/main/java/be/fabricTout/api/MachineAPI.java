@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
@@ -138,6 +139,7 @@ public class MachineAPI {
 
             if (machine != null) {
             	ObjectMapper mapper = new ObjectMapper();
+            	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 mapper.registerModule(new JavaTimeModule());
 
                 String json = mapper.writeValueAsString(machine);
@@ -171,7 +173,7 @@ public class MachineAPI {
             if (machines != null && !machines.isEmpty()) {
             	ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
-
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(machines);
                 System.out.println("JSON :" + json);
                 System.out.println("Status.OK");

@@ -228,6 +228,7 @@ public class MachineDAO extends DAO<Machine> {
                         int correctedYear = dateMaintenance.getYear() - 100; 
                         dateMaintenance = dateMaintenance.withYear(correctedYear);
                     }
+                    System.out.println("Date maintenance: " + dateMaintenanceStr);
                     
                     Maintenance maintenance = new Maintenance(
                             Integer.parseInt(parts[0].trim()), // id_maintenance

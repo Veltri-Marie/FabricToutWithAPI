@@ -56,27 +56,57 @@ public class Machine implements Serializable {
     }
     
     public Machine(JSONObject json) {
-		this();
-		setIdMachine(json.optInt("idMachine", -1));
-		setType(Type.valueOf(json.getString("type")));
-		setSize(json.getDouble("size"));
-		setState(State.valueOf(json.getString("state")));
-		JSONArray zonesArray = json.getJSONArray("zones");
-		List<Zone> zones = new ArrayList<>();
-		for (int i = 0; i < zonesArray.length(); i++) {
-			zones.add(new Zone(zonesArray.getJSONObject(i)));
-		}
-		setZones(zones);
-		
-		JSONArray maintenancesArray = json.getJSONArray("maintenances");
-		List<Maintenance> maintenances = new ArrayList<>();
-		for (int i = 0; i < maintenancesArray.length(); i++) {
-			maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
-		}
-		setMaintenances(maintenances);
-		
-		System.out.println("Machine (JSONObject json): " + json);
+        this();
+
+        if (json.has("idMachine")) {
+            setIdMachine(json.optInt("idMachine", -1));
+        }
+
+        if (json.has("type")) {
+            setType(Type.valueOf(json.getString("type")));
+        }
+
+        if (json.has("size")) {
+            setSize(json.getDouble("size"));
+        }
+
+        if (json.has("state")) {
+            setState(State.valueOf(json.getString("state")));
+        }
+
+        if (json.has("zones")) {
+            JSONArray zonesArray = json.optJSONArray("zones");
+            if (zonesArray != null) {
+                List<Zone> zones = new ArrayList<>();
+                for (int i = 0; i < zonesArray.length(); i++) {
+                    zones.add(new Zone(zonesArray.getJSONObject(i)));
+                }
+                setZones(zones);
+            } else {
+                setZones(new ArrayList<>());
+            }
+        } else {
+            setZones(new ArrayList<>());
+        }
+
+        if (json.has("maintenances")) {
+            JSONArray maintenancesArray = json.optJSONArray("maintenances");
+            if (maintenancesArray != null) {
+                List<Maintenance> maintenances = new ArrayList<>();
+                for (int i = 0; i < maintenancesArray.length(); i++) {
+                    maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
+                }
+                setMaintenances(maintenances);
+            } else {
+                setMaintenances(new ArrayList<>());
+            }
+        } else {
+            setMaintenances(new ArrayList<>());
+        }
+
+        System.out.println("Machine (JSONObject json): " + json);
     }
+
     
 	public Machine(Type type, double size, State state, List<Zone> zones) {
 		this(-1, type, size, state, zones);
