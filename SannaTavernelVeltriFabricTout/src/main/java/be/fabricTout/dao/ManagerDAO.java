@@ -7,12 +7,15 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.javabeans.Manager;
+import be.fabricTout.javabeans.SerializedStringParser;
 
 public class ManagerDAO extends DAO<Manager>{
 
@@ -40,34 +43,27 @@ public class ManagerDAO extends DAO<Manager>{
 
 	@Override
 	public Manager findDAO(int id) {
-		System.out.println("Client ManagerDAO : findDAO");
+	    System.out.println("Client ManagerDAO : findDAO");
 	    Manager manager = null;
 	    try {
-
 	        String response = getResource()
 	                .path("manager/" + id)
 	                .accept(MediaType.APPLICATION_JSON)
 	                .get(String.class);
-	        
+
 	        System.out.println("Response from API: " + response);
 
-
-	        ObjectMapper mapper = new ObjectMapper();
-	        mapper.registerModule(new JavaTimeModule());
-	        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-	        manager = mapper.readValue(response, Manager.class);
+	        JSONObject json = SerializedStringParser.parseJavaSerializedString(response);
+	        manager = new Manager(json);
 
 	        System.out.println("Deserialization Successful: " + manager);
-	    } catch (IOException e) {
-	        System.err.println("Error deserializing Manager object: " + e.getMessage());
-	        e.printStackTrace();
 	    } catch (Exception e) {
 	        System.err.println("Unexpected error in findDAO: " + e.getMessage());
 	        e.printStackTrace();
 	    }
 	    return manager;
 	}
+
 
 
 

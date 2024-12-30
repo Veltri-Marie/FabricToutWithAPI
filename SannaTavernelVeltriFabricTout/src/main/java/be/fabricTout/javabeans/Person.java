@@ -8,7 +8,12 @@ import java.util.Objects;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,13 +42,47 @@ public abstract class Person implements Serializable {
 	
 	public Person(JSONObject json) {
 	    this();
-	    setIdPerson(json.optInt("idPerson"));
-	    setFirstName(json.getString("firstName"));
-	    setLastName(json.getString("lastName"));
-	    //setBirthDate(LocalDate.parse(json.getString("birthDate")));
-	    setPhoneNumber(json.getString("phoneNumber"));
+
+	    if (json.has("idPerson")) {
+	        setIdPerson(json.optInt("idPerson"));
+	    }
+	    if (json.has("firstName")) {
+	        setFirstName(json.optString("firstName"));
+	    }
+	    if (json.has("lastName")) {
+	        setLastName(json.optString("lastName"));
+	    }
+	    if (json.has("birthDate")) {
+	        setBirthDate(LocalDate.parse(json.optString("birthDate")));
+	    }
+	    if (json.has("phoneNumber")) {
+	        setPhoneNumber(json.optString("phoneNumber"));
+	    }
+
 	    System.out.println("Person (JSONObject json): " + json);
 	}
+
+	
+	public Person(String serializedString) {
+	    JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
+	    if (json.has("idPerson")) {
+	        setIdPerson(json.getInt("idPerson"));
+	    }
+	    if (json.has("firstName")) {
+	        setFirstName(json.getString("firstName"));
+	    }
+	    if (json.has("lastName")) {
+	        setLastName(json.getString("lastName"));
+	    }
+		if (json.has("birthDate")) {
+			setBirthDate(LocalDate.parse(json.getString("birthDate")));
+		}
+	    if (json.has("phoneNumber")) {
+	        setPhoneNumber(json.getString("phoneNumber"));
+	    }
+	    System.out.println("Person (serializedString): " + json);
+	}
+
 
 
     // PROPERTIES
@@ -156,7 +195,7 @@ public abstract class Person implements Serializable {
         		"idPerson=" + idPerson + '\'' +
         		"firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                //", birthDate=" + birthDate +
+                ", birthDate=" + birthDate +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }

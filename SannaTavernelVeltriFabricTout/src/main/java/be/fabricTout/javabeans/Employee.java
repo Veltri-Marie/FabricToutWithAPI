@@ -6,8 +6,14 @@ import java.util.Objects;
 
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import be.fabricTout.dao.EmployeeDAO;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Employee extends Person implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -34,12 +40,31 @@ public abstract class Employee extends Person implements Serializable {
     }
     
     public Employee(JSONObject json) {
-		super(json);
-		setRegistrationCode(json.getString("registrationCode"));
-		setPassword(json.getString("password"));
-		
-		System.out.println("Employee(JSONObject json) : " + json);
+        super(json);
+
+        if (json.has("registrationCode")) {
+            setRegistrationCode(json.optString("registrationCode"));
+        }
+        if (json.has("password")) {
+            setPassword(json.optString("password"));
+        }
+
+        System.out.println("Employee(JSONObject json): " + json);
     }
+
+    
+    public Employee(String serializedString) {
+        super(serializedString); 
+        JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
+        if (json.has("registrationCode")) {
+            setRegistrationCode(json.getString("registrationCode"));
+        }
+        if (json.has("password")) {
+            setPassword(json.getString("password"));
+        }
+        System.out.println("Employee (serializedString): " + json);
+    }
+
 
     // PROPERTIES
     public String getRegistrationCode() {

@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -101,13 +102,16 @@ public class MachineDAO extends DAO<Machine> {
             
             System.out.println("MachineDAO -> FindAll client :" + response);
             
-            if (response == null || response.isEmpty()) {
-                return new ArrayList<>();
-            }
-            
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            
+            
+
             return mapper.readValue(response, new TypeReference<List<Machine>>() {});
         } catch (IOException e) {
             e.printStackTrace();

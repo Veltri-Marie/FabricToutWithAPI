@@ -11,12 +11,14 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.MachineDAO;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idMachine")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Machine implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -26,7 +28,9 @@ public class Machine implements Serializable {
     private Type type;
     private double size;
     private State state;
+    @JsonManagedReference
     private List<Maintenance> maintenances;
+    @JsonManagedReference
     private List<Zone> zones;
 
     // CONSTRUCTORS

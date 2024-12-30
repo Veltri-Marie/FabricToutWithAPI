@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -16,12 +18,15 @@ import be.fabricTout.dao.ManagerDAO;
 import be.fabricTout.dao.PurchaserDAO;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Manager extends Employee implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
     // ATTRIBUTES
+    @JsonManagedReference
     private List<Maintenance> maintenances;
+    @JsonBackReference
     private Site site;
 
     // CONSTRUCTORS
@@ -47,11 +52,37 @@ public class Manager extends Employee implements Serializable {
 	}
 	
 	public Manager(JSONObject json) {
-		super(json);
-        setSite(new Site(json.getJSONObject("site")));
-		System.out.println("Manager (JSONObject json): " + json);
+	    super(json);
 
+	    if (json.has("site")) {
+	        setSite(new Site(json.getJSONObject("site")));
+	    }
+	    if (json.has("maintenances")) {
+	        JSONArray maintenancesArray = json.optJSONArray("maintenances");
+	        if (maintenancesArray != null) {
+	            List<Maintenance> maintenances = new ArrayList<>();
+	            for (int i = 0; i < maintenancesArray.length(); i++) {
+	                maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
+	            }
+	            setMaintenances(maintenances);
+	        } else {
+	            setMaintenances(new ArrayList<>());
+	        }
+	    }
+
+	    System.out.println("Manager (JSONObject json): " + json);
 	}
+
+	
+	public Manager(String serializedString) {
+	    super(serializedString); 
+	    JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
+	    if (json.has("site")) {
+	        setSite(new Site(json.getJSONObject("site")));
+	    }
+	    System.out.println("Manager (serializedString): " + json);
+	}
+
     
    
     // PROPERTIES

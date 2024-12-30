@@ -48,9 +48,10 @@ public class ManagerAPI {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(manager); 
                 return Response
                         .status(Status.OK)
-                        .entity(manager.toString())
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -66,6 +67,7 @@ public class ManagerAPI {
                     .build();
         }
     }
+
 
 
 

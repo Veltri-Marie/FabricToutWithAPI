@@ -10,12 +10,16 @@ import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.MaintenanceDAO;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idMaintenance")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Maintenance implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,8 +30,11 @@ public class Maintenance implements Serializable {
     private int duration;
     private String report;
     private Status status;
+    @JsonBackReference
     private Machine machine;
+    @JsonManagedReference
     private List<Worker> workers;
+    @JsonBackReference
     private Manager manager;
 
     // CONSTRUCTORS
