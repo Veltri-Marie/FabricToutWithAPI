@@ -7,6 +7,9 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,6 +77,7 @@ public class MachineDAO extends DAO<Machine> {
 
     @Override
     public Machine findDAO(int id) {
+    	Machine machine = null;
         try {
             String response = getResource()
                     .path("machine/" + id)
@@ -82,36 +86,43 @@ public class MachineDAO extends DAO<Machine> {
             
             System.out.println(response);
             
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            return mapper.readValue(response, Machine.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            JSONObject json = new JSONObject (response);
+            
+            machine = new Machine(json);
+            
+        } catch (Exception e) {
+        	System.err.println("Unexpected error in findDAO: " + e.getMessage());
+	        e.printStackTrace();
         }
+        return machine;
     }
 
     @Override
     public List<Machine> findAllDAO() {
-        try {
-            String response = getResource()
-                    .path("machine")
-                    .accept(MediaType.APPLICATION_JSON)
-                    .get(String.class);
-            
-            System.out.println("MachineDAO -> FindAll client :" + response);
-            
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-          
-            
+    	List<Machine> machines = new ArrayList<>();
+    	try {
+	        String response = getResource()
+	                .path("machine")
+	                .accept(MediaType.APPLICATION_JSON)
+	                .get(String.class);
 
-            return mapper.readValue(response, new TypeReference<List<Machine>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+	        if (response == null || response.isEmpty()) {
+	            return machines;
+	        }
+
+	        JSONArray jsonArray = new JSONArray(response);
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject json = jsonArray.getJSONObject(i);
+	            Machine machine = new Machine(json);
+	            machines.add(machine); 
+	        }
+
+	        System.out.println("Machines successfully deserialized: " + machines);
+	    } catch (Exception e) {
+	        System.err.println("Unexpected error in findAllDAO: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return machines;
     }
 }
