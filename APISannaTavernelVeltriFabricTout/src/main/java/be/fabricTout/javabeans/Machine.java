@@ -204,6 +204,7 @@ public class Machine implements Serializable {
                 ", type=" + type +
                 ", size=" + size +
                 ", state=" + state +
+                ", site=" + zones.get(0).getSite() +
                 '}';
     }
 

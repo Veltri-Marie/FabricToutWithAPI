@@ -163,6 +163,7 @@ public class Zone implements Serializable {
                 "zoneId=" + zoneId +
                 ", letter=" + letter +
                 ", color=" + color +
+                ", site=" + site +
                 '}';
     }
 
