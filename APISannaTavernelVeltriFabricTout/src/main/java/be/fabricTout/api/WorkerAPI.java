@@ -10,6 +10,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import be.fabricTout.connection.FabricToutConnection;
 import be.fabricTout.dao.SiteDAO;
 import be.fabricTout.dao.WorkerDAO;
@@ -38,6 +42,10 @@ public class WorkerAPI {
             Worker worker = Worker.find(workerDAO, id);
 
             if (worker != null) {
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(worker);
                 return Response
                         .status(Status.OK)
                         .entity(worker)
@@ -64,6 +72,7 @@ public class WorkerAPI {
             List<Worker> workers = Worker.findAll(workerDAO);
 
             if (workers != null && !workers.isEmpty()) {
+            	
                 return Response
                         .status(Status.OK)
                         .entity(workers)

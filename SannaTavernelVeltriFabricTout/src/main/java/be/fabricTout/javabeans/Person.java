@@ -63,26 +63,6 @@ public abstract class Person implements Serializable {
 	}
 
 	
-	public Person(String serializedString) {
-	    JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
-	    if (json.has("idPerson")) {
-	        setIdPerson(json.getInt("idPerson"));
-	    }
-	    if (json.has("firstName")) {
-	        setFirstName(json.getString("firstName"));
-	    }
-	    if (json.has("lastName")) {
-	        setLastName(json.getString("lastName"));
-	    }
-		if (json.has("birthDate")) {
-			setBirthDate(LocalDate.parse(json.getString("birthDate")));
-		}
-	    if (json.has("phoneNumber")) {
-	        setPhoneNumber(json.getString("phoneNumber"));
-	    }
-	    System.out.println("Person (serializedString): " + json);
-	}
-
 
 
     // PROPERTIES

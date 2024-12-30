@@ -49,6 +49,7 @@ public class ManagerAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(manager); 
+                System.out.println("Manager in JSON: " + json);
                 return Response
                         .status(Status.OK)
                         .entity(json)
@@ -78,9 +79,13 @@ public class ManagerAPI {
             List<Manager> managers = Manager.findAll(managerDAO);
 
             if (managers != null && !managers.isEmpty()) {
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(managers);
                 return Response
                         .status(Status.OK)
-                        .entity(managers)
+                        .entity(json)
                         .build();
             } else {
                 return Response

@@ -105,11 +105,7 @@ public class MachineDAO extends DAO<Machine> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            
+          
             
 
             return mapper.readValue(response, new TypeReference<List<Machine>>() {});

@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import be.fabricTout.dao.ManagerDAO;
 import be.fabricTout.dao.PurchaserDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Manager extends Employee implements Serializable {
     
@@ -72,18 +71,6 @@ public class Manager extends Employee implements Serializable {
 
 	    System.out.println("Manager (JSONObject json): " + json);
 	}
-
-	
-	public Manager(String serializedString) {
-	    super(serializedString); 
-	    JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
-	    if (json.has("site")) {
-	        setSite(new Site(json.getJSONObject("site")));
-	    }
-	    System.out.println("Manager (serializedString): " + json);
-	}
-
-    
    
     // PROPERTIES
     public List<Maintenance> getMaintenances() {

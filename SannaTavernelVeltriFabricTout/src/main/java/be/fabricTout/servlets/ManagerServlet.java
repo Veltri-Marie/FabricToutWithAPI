@@ -86,6 +86,9 @@ public class ManagerServlet extends HttpServlet {
         if (currentManager != null) {
             session.setAttribute("firstName", currentManager.getFirstName());
         }
+        
+        /*A RETIRER*/
+        Manager.findAll(managerDAO);
 
         String action = request.getParameter("action");
         

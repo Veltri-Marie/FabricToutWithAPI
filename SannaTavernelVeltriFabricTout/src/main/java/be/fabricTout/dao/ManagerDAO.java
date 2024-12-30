@@ -7,15 +7,16 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.javabeans.Manager;
-import be.fabricTout.javabeans.SerializedStringParser;
 
 public class ManagerDAO extends DAO<Manager>{
 
@@ -50,10 +51,10 @@ public class ManagerDAO extends DAO<Manager>{
 	                .path("manager/" + id)
 	                .accept(MediaType.APPLICATION_JSON)
 	                .get(String.class);
-
-	        System.out.println("Response from API: " + response);
-
-	        JSONObject json = SerializedStringParser.parseJavaSerializedString(response);
+	        
+            JSONObject json = new JSONObject(response);
+            System.out.println("Manager findDAO Raw JSON Response: " + json);
+            
 	        manager = new Manager(json);
 
 	        System.out.println("Deserialization Successful: " + manager);
@@ -64,30 +65,37 @@ public class ManagerDAO extends DAO<Manager>{
 	    return manager;
 	}
 
+	@Override
+	public List<Manager> findAllDAO() {
+	    List<Manager> managers = new ArrayList<>();
 
+	    try {
+	        String response = getResource()
+	                .path("manager")
+	                .accept(MediaType.APPLICATION_JSON)
+	                .get(String.class);
 
+	        System.out.println("Manager findAllDAO Raw JSON Response: " + response);
 
-    @Override
-    public List<Manager> findAllDAO() {
-        List<Manager> managers = new ArrayList<>();
+	        if (response == null || response.isEmpty()) {
+	            return managers;
+	        }
 
-        try {
-            String response = getResource()
-                    .path("manager")
-                    .accept(MediaType.APPLICATION_JSON)
-                    .get(String.class);
-            System.out.println("Manager findAllDAO Raw JSON Response: " + response);
+	        JSONArray jsonArray = new JSONArray(response);
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject json = jsonArray.getJSONObject(i);
+	            Manager manager = new Manager(json);
+	            managers.add(manager); 
+	        }
 
+	        System.out.println("Managers successfully deserialized: " + managers);
+	    } catch (Exception e) {
+	        System.err.println("Unexpected error in findAllDAO: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            managers = mapper.readValue(response, new TypeReference<List<Manager>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	    return managers;
+	}
 
-        return managers;
-    }
    
 }

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.EmployeeDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Employee extends Person implements Serializable {
     
@@ -50,19 +49,6 @@ public abstract class Employee extends Person implements Serializable {
         }
 
         System.out.println("Employee(JSONObject json): " + json);
-    }
-
-    
-    public Employee(String serializedString) {
-        super(serializedString); 
-        JSONObject json = SerializedStringParser.parseJavaSerializedString(serializedString);
-        if (json.has("registrationCode")) {
-            setRegistrationCode(json.getString("registrationCode"));
-        }
-        if (json.has("password")) {
-            setPassword(json.getString("password"));
-        }
-        System.out.println("Employee (serializedString): " + json);
     }
 
 

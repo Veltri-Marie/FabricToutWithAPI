@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.EmployeeDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class Employee extends Person implements Serializable {
     
