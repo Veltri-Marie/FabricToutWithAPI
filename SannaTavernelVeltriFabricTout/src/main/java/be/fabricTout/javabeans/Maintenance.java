@@ -30,11 +30,9 @@ public class Maintenance implements Serializable {
     private int duration;
     private String report;
     private Status status;
-    @JsonBackReference
     private Machine machine;
     @JsonManagedReference
     private List<Worker> workers;
-    @JsonBackReference
     private Manager manager;
 
     // CONSTRUCTORS
@@ -71,79 +69,78 @@ public class Maintenance implements Serializable {
 	public Maintenance(JSONObject json) {
 	    this();
 
-	    // Vérification de l'attribut "idMaintenance"
 	    if (json.has("idMaintenance")) {
-	        setIdMaintenance(json.optInt("idMaintenance", -1));
+	    	if (!json.optString("idMaintenance").isBlank())
+	    		setIdMaintenance(json.optInt("idMaintenance", -1));
 	    }
 
-	    // Vérification de l'attribut "date"
 	    if (json.has("date")) {
-	        Object dateObject = json.get("date");
-	        if (dateObject instanceof JSONArray) {
-	            JSONArray dateArray = (JSONArray) dateObject;
-	            if (dateArray.length() == 3) { // Assurez-vous que le tableau contient bien 3 éléments
-	                int year = dateArray.optInt(0, 0);
-	                int month = dateArray.optInt(1, 1);
-	                int day = dateArray.optInt(2, 1);
-	                setDate(LocalDate.of(year, month, day));
-	            }
-	        } else if (dateObject instanceof String) {
-	            try {
-	                setDate(LocalDate.parse((String) dateObject));
-	            } catch (Exception e) {
-	                System.err.println("Erreur lors de l'analyse de la date : " + dateObject);
-	                e.printStackTrace();
-	            }
-	        }
+	    	if (!json.optString("date").isBlank())
+	    	{
+		        Object dateObject = json.get("date");
+		        if (dateObject instanceof JSONArray) {
+		            JSONArray dateArray = (JSONArray) dateObject;
+		            if (dateArray.length() == 3) { 
+		                int year = dateArray.optInt(0, 0);
+		                int month = dateArray.optInt(1, 1);
+		                int day = dateArray.optInt(2, 1);
+		                setDate(LocalDate.of(year, month, day));
+		            }
+		        } else if (dateObject instanceof String) {
+		            try {
+		                setDate(LocalDate.parse((String) dateObject));
+		            } catch (Exception e) {
+		                System.err.println("Erreur lors de l'analyse de la date : " + dateObject);
+		                e.printStackTrace();
+		            }
+		        }
+	    	}
 	    }
 
-	    // Vérification de l'attribut "duration"
 	    if (json.has("duration")) {
-	        setDuration(json.optInt("duration", 0));
+	    	if (!json.optString("duration").isBlank())
+	    		setDuration(json.optInt("duration", 0));
 	    }
 
-	    // Vérification de l'attribut "report"
 	    if (json.has("report")) {
-	        setReport(json.optString("report", ""));
+	    	if (!json.optString("report").isBlank())
+	    		setReport(json.optString("report", ""));
 	    }
 
-	    // Vérification de l'attribut "status"
 	    if (json.has("status")) {
-	        try {
-	            setStatus(Status.valueOf(json.getString("status")));
-	        } catch (IllegalArgumentException e) {
-	            System.err.println("Erreur : Valeur inattendue pour le status : " + json.getString("status"));
-	            e.printStackTrace();
-	        }
+	    	if (!json.optString("status").isBlank())
+	    		setStatus(Status.valueOf(json.getString("status")));
 	    }
 
-	    // Vérification de l'attribut "machine"
 	    if (json.has("machine")) {
 	        JSONObject machineJson = json.optJSONObject("machine");
 	        if (machineJson != null) {
-	            setMachine(new Machine(machineJson));
-	        } else {
-	            setMachine(null);
-	        }
+	        	Object machineObject = json.get("machine");
+	        	if (machineObject instanceof JSONObject) {
+                    setMachine(new Machine((JSONObject) machineObject));
+	        	}
+	        } 
 	    }
 
-	    // Vérification de l'attribut "manager"
 	    if (json.has("manager")) {
 	        JSONObject managerJson = json.optJSONObject("manager");
 	        if (managerJson != null) {
-	            setManager(new Manager(managerJson));
-	        } else {
-	            setManager(null);
-	        }
+	        	Object managerObject = json.get("manager");
+	        	if (managerObject instanceof JSONObject) {
+                    setManager(new Manager((JSONObject) managerObject));
+	        	}
+	        } 
 	    }
 
-	    // Vérification de l'attribut "workers"
 	    if (json.has("workers")) {
 	        JSONArray workersArray = json.optJSONArray("workers");
 	        if (workersArray != null) {
 	            List<Worker> workers = new ArrayList<>();
 	            for (int i = 0; i < workersArray.length(); i++) {
-	                workers.add(new Worker(workersArray.getJSONObject(i)));
+	            	Object workerObject = workersArray.get(i);
+	            	if (workerObject instanceof JSONObject) {
+	            		workers.add(new Worker((JSONObject) workerObject));
+	            	}
 	            }
 	            setWorkers(workers);
 	        } else {
@@ -153,7 +150,6 @@ public class Maintenance implements Serializable {
 	        setWorkers(new ArrayList<>());
 	    }
 
-	    System.out.println("Maintenance (JSONObject json): " + json);
 	}
 
 

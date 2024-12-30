@@ -168,6 +168,7 @@ public class MachineAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         try {
+        	System.out.println("API: MachineAPI.findAll()");
             List<Machine> machines = Machine.findAll(machineDAO);
 
             if (machines != null && !machines.isEmpty()) {
@@ -175,7 +176,7 @@ public class MachineAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(machines);
-                System.out.println("JSON :" + json);
+                System.out.println("JSON de machineAPI :" + json);
                 System.out.println("Status.OK");
                 return Response
                         .status(Status.OK)

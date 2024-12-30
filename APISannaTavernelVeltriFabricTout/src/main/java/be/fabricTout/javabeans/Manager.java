@@ -25,7 +25,6 @@ public class Manager extends Employee implements Serializable {
     // ATTRIBUTES
     @JsonManagedReference
     private List<Maintenance> maintenances;
-    @JsonBackReference
     private Site site;
 
     // CONSTRUCTORS
@@ -54,22 +53,28 @@ public class Manager extends Employee implements Serializable {
 	    super(json);
 
 	    if (json.has("site")) {
-	        setSite(new Site(json.getJSONObject("site")));
+	        Object siteObject = json.get("site");
+
+	        if (siteObject instanceof JSONObject) {
+	            setSite(new Site((JSONObject) siteObject));
+	        }
 	    }
+
 	    if (json.has("maintenances")) {
 	        JSONArray maintenancesArray = json.optJSONArray("maintenances");
 	        if (maintenancesArray != null) {
 	            List<Maintenance> maintenances = new ArrayList<>();
 	            for (int i = 0; i < maintenancesArray.length(); i++) {
-	                maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
+	            	Object maintenanceObject = maintenancesArray.get(i);
+	            	if (maintenanceObject instanceof JSONObject) {
+	            		maintenances.add(new Maintenance((JSONObject) maintenanceObject));
+	            	}
 	            }
 	            setMaintenances(maintenances);
 	        } else {
 	            setMaintenances(new ArrayList<>());
 	        }
 	    }
-
-	    System.out.println("Manager (JSONObject json): " + json);
 	}
 
 	

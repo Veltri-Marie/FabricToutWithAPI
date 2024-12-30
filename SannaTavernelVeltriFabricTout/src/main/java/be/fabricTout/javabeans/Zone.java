@@ -26,7 +26,6 @@ public class Zone implements Serializable {
     private int zoneId;
     private Letter letter;
     private Color color;
-    @JsonBackReference
     private Site site;
     @JsonManagedReference
     private List<Machine> machines;
@@ -67,25 +66,38 @@ public class Zone implements Serializable {
 	public Zone(JSONObject json) {
 		this();
 		if (json.has("zoneId")) {
-			setZoneId(json.getInt("zoneId"));
+			if (!json.optString("zoneId").isBlank())
+				setZoneId(json.getInt("zoneId"));
 		}
 		if (json.has("letter")) {
-			setLetter(Letter.valueOf(json.getString("letter")));
+			if (!json.optString("letter").isBlank())
+				setLetter(Letter.valueOf(json.getString("letter")));
 		}
 		if (json.has("color")) {
-			setColor(Color.valueOf(json.getString("color")));
+			if (!json.optString("color").isBlank())
+				setColor(Color.valueOf(json.getString("color")));
 		}
 		if (json.has("site")) {
-			setSite(new Site(json.getJSONObject("site")));
-			site.addZone(this);
+		    Object siteElement = json.get("site");
+		    
+		    if (siteElement instanceof JSONObject) {
+		        JSONObject siteJson = (JSONObject) siteElement;
+		        Site site = new Site(siteJson); 
+		        setSite(site); 
+		        site.addZone(this); 
+		    } 
+		}	
+		if (json.has("machines")) {
+			List<Machine> machines = new ArrayList<>();
+			if (json.getJSONArray("machines") != null) {
+				for (int i = 0; i < json.getJSONArray("machines").length(); i++) {
+					Object machineElement = json.getJSONArray("machines").get(i);
+					if (machineElement instanceof JSONObject)
+						machines.add(new Machine((JSONObject) machineElement));	
+				}
+				setMachines(machines);
+			}
 		}
-		else if (json.has("idSite") && json.has("name") && json.has("city")) {
-			setSite(new Site(json.getInt("idSite"), json.getString("name"), json.getString("city")));
-			site.addZone(this);			
-		}
-		System.out.println("Zone(JSONObject json) " + this);
-
-		
 	}
 
     // PROPERTIES

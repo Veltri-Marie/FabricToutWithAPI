@@ -59,15 +59,18 @@ public class Machine implements Serializable {
         this();
 
         if (json.has("idMachine")) {
-            setIdMachine(json.optInt("idMachine", -1));
+        	if (!json.optString("idMachine").isBlank())
+    			setIdMachine(json.optInt("idMachine", -1));
         }
 
         if (json.has("type")) {
-            setType(Type.valueOf(json.getString("type")));
+        	if (!json.optString("type").isBlank())
+        		setType(Type.valueOf(json.getString("type")));
         }
 
         if (json.has("size")) {
-            setSize(json.getDouble("size"));
+        	if (!json.optString("size").isBlank())
+        		setSize(json.getDouble("size"));
         }
 
         if (json.has("state")) {
@@ -75,26 +78,29 @@ public class Machine implements Serializable {
         }
 
         if (json.has("zones")) {
-            JSONArray zonesArray = json.optJSONArray("zones");
-            if (zonesArray != null) {
-                List<Zone> zones = new ArrayList<>();
-                for (int i = 0; i < zonesArray.length(); i++) {
-                    zones.add(new Zone(zonesArray.getJSONObject(i)));
-                }
-                setZones(zones);
-            } else {
-                setZones(new ArrayList<>());
-            }
-        } else {
-            setZones(new ArrayList<>());
-        }
+		    JSONArray zonesArray = json.getJSONArray("zones");
+		    if (zonesArray != null) {
+		        List<Zone> zones = new ArrayList<>();
+		        for (int i = 0; i < zonesArray.length(); i++) {
+		            Object zoneElement = zonesArray.get(i);
+
+		            if (zoneElement instanceof JSONObject) {
+		                zones.add(new Zone((JSONObject) zoneElement));
+		            }
+		        }
+		        setZones(zones);
+		    }
+		}
 
         if (json.has("maintenances")) {
             JSONArray maintenancesArray = json.optJSONArray("maintenances");
             if (maintenancesArray != null) {
                 List<Maintenance> maintenances = new ArrayList<>();
                 for (int i = 0; i < maintenancesArray.length(); i++) {
-                    maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
+                	Object maintenanceElement = maintenancesArray.get(i);
+                	if (maintenanceElement instanceof JSONObject) {
+                		maintenances.add(new Maintenance((JSONObject) maintenanceElement));
+                	}
                 }
                 setMaintenances(maintenances);
             } else {
@@ -103,8 +109,6 @@ public class Machine implements Serializable {
         } else {
             setMaintenances(new ArrayList<>());
         }
-
-        System.out.println("Machine (JSONObject json): " + json);
     }
 
     

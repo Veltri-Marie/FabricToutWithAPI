@@ -202,6 +202,7 @@ public class MachineDAO extends DAO<Machine> {
                             (String) attributes[8] // site_city
                     );
                     zones.add(zone);
+                    System.out.println("++++++++++++++++++++++Zone: " + zone);
                     site = zone.getSite();
                     site.setManager(manager);
                 }
@@ -228,7 +229,6 @@ public class MachineDAO extends DAO<Machine> {
                         int correctedYear = dateMaintenance.getYear() - 100; 
                         dateMaintenance = dateMaintenance.withYear(correctedYear);
                     }
-                    System.out.println("Date maintenance: " + dateMaintenanceStr);
                     
                     Maintenance maintenance = new Maintenance(
                             Integer.parseInt(parts[0].trim()), // id_maintenance

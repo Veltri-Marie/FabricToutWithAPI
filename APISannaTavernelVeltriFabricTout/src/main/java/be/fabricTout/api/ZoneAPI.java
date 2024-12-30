@@ -140,6 +140,7 @@ public class ZoneAPI {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") int id) {
+    	System.out.println("**API: ZoneAPI.find() for ID: " + id);
         try {
             Zone zone = Zone.find(zoneDAO, id);
 

@@ -30,7 +30,6 @@ public class Site implements Serializable {
     private List<Zone> zones;
     @JsonManagedReference
     private List<Worker> workers;
-    @JsonBackReference
     private Manager manager;
 
     // CONSTRUCTORS
@@ -67,19 +66,51 @@ public class Site implements Serializable {
     
 	public Site(JSONObject json) {
 		this();
-		setIdSite(json.optInt("idSite", -1));
-		setName(json.getString("name"));
-		setCity(json.getString("city"));
-		if (json.has("zones")) {
-			JSONArray zonesArray = json.getJSONArray("zones");
-			List<Zone> zones = new ArrayList<>();
-			for (int i = 0; i < zonesArray.length(); i++) {
-				zones.add(new Zone(zonesArray.getJSONObject(i)));
-			}
-			setZones(zones);
+		if (json.has("idSite")) {
+			if (!json.optString("idSite").isBlank())
+				setIdSite(json.getInt("idSite"));
 		}
-		System.out.println("Site (JSONObject json): " + json);
+		if (json.has("name")) {
+			if (!json.optString("name").isBlank())
+				setName(json.getString("name"));
+		}
+		if(json.has("city")) {
+			if (!json.optString("city").isBlank())
+				setCity(json.getString("city"));
+		}
+		if (json.has("zones")) {
+		    JSONArray zonesArray = json.getJSONArray("zones");
+		    if (zonesArray != null) {
+		        List<Zone> zones = new ArrayList<>();
+		        for (int i = 0; i < zonesArray.length(); i++) {
+		            Object zoneElement = zonesArray.get(i);
+		            if (zoneElement instanceof JSONObject) {
+		                zones.add(new Zone((JSONObject) zoneElement));
+		            }
+		        }
+		        setZones(zones);
+		    }
+		}
 
+		if(json.has("workers")) {
+            JSONArray workersArray = json.getJSONArray("workers");
+            List<Worker> workers = new ArrayList<>();
+            if (workersArray != null) {
+	            for (int i = 0; i < workersArray.length(); i++) {
+	            	Object workerElement = workersArray.get(i);
+	            	if (workerElement instanceof JSONObject) {
+                    		workers.add(new Worker((JSONObject) workerElement));
+	            	}
+	            }
+	            setWorkers(workers);
+            }
+		}
+		if (json.has("manager")) {
+			Object managerObject = json.get("manager");
+			if (managerObject instanceof JSONObject) {
+				setManager(new Manager((JSONObject) managerObject));
+			}
+		}
 	}
 	
 

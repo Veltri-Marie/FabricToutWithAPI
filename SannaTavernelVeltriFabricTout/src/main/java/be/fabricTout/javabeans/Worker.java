@@ -25,7 +25,6 @@ public class Worker extends Employee implements Serializable {
     // ATTRIBUTES
     @JsonManagedReference
     private List<Maintenance> maintenances;
-    @JsonBackReference
     private Site site;
 
     // CONSTRUCTORS
@@ -60,14 +59,15 @@ public class Worker extends Employee implements Serializable {
 	        if (maintenancesArray != null) {
 	            List<Maintenance> maintenances = new ArrayList<>();
 	            for (int i = 0; i < maintenancesArray.length(); i++) {
-	                maintenances.add(new Maintenance(maintenancesArray.getJSONObject(i)));
-	            }
+	            	Object object = maintenancesArray.get(i);
+	            	if (object instanceof JSONObject)
+	            		maintenances.add(new Maintenance((JSONObject) object));
+	   	            }
 	            setMaintenances(maintenances);
 	        } else {
 	            setMaintenances(new ArrayList<>());
 	        }
 	    }
-		System.out.println("Worker(JSONObject json) " + this);
 	}
 	
     // METHODS	

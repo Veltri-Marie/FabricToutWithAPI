@@ -42,13 +42,13 @@ public abstract class Employee extends Person implements Serializable {
         super(json);
 
         if (json.has("registrationCode")) {
+        	if (!json.optString("registrationCode").isBlank()) 
             setRegistrationCode(json.optString("registrationCode"));
         }
         if (json.has("password")) {
-            setPassword(json.optString("password"));
+        	if (!json.optString("password").isBlank())
+        		setPassword(json.optString("password"));
         }
-
-        System.out.println("Employee(JSONObject json): " + json);
     }
 
 

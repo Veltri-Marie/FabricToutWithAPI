@@ -117,7 +117,6 @@ public class MachineDAO extends DAO<Machine> {
 	            machines.add(machine); 
 	        }
 
-	        System.out.println("Machines successfully deserialized: " + machines);
 	    } catch (Exception e) {
 	        System.err.println("Unexpected error in findAllDAO: " + e.getMessage());
 	        e.printStackTrace();

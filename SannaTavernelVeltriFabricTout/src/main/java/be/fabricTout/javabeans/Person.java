@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,25 +45,45 @@ public abstract class Person implements Serializable {
 	    this();
 
 	    if (json.has("idPerson")) {
-	        setIdPerson(json.optInt("idPerson"));
+	    	if (!json.optString("idPerson").isBlank()) 
+	    		setIdPerson(json.optInt("idPerson"));
 	    }
 	    if (json.has("firstName")) {
-	        setFirstName(json.optString("firstName"));
+	    	if (!json.optString("firstName").isBlank())
+	    		setFirstName(json.optString("firstName"));
 	    }
 	    if (json.has("lastName")) {
-	        setLastName(json.optString("lastName"));
+	    	if (!json.optString("lastName").isBlank())
+	    		setLastName(json.optString("lastName"));
 	    }
 	    if (json.has("birthDate")) {
-	        setBirthDate(LocalDate.parse(json.optString("birthDate")));
+	    	if (!json.optString("birthDate").isBlank())
+	    	{
+		        Object dateObject = json.get("birthDate");
+		        if (dateObject instanceof JSONArray) {
+		            JSONArray dateArray = (JSONArray) dateObject;
+		            if (dateArray.length() == 3) { 
+		                int year = dateArray.optInt(0, 0);
+		                int month = dateArray.optInt(1, 1);
+		                int day = dateArray.optInt(2, 1);
+		                setBirthDate(LocalDate.of(year, month, day));
+		            }
+		        } else if (dateObject instanceof String) {
+		            try {
+		            	setBirthDate(LocalDate.parse((String) dateObject));
+		            } catch (Exception e) {
+		                System.err.println("Erreur lors de l'analyse de la date : " + dateObject);
+		                e.printStackTrace();
+		            }
+		        }
+	    	}
 	    }
+
 	    if (json.has("phoneNumber")) {
-	        setPhoneNumber(json.optString("phoneNumber"));
+	    	if (!json.optString("phoneNumber").isBlank())
+	    		setPhoneNumber(json.optString("phoneNumber"));
 	    }
-
-	    System.out.println("Person (JSONObject json): " + json);
 	}
-
-	
 
 
     // PROPERTIES
