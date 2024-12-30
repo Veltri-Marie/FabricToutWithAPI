@@ -7,9 +7,13 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Site;
 
 public class SiteDAO extends DAO<Site> {
@@ -78,9 +82,13 @@ public class SiteDAO extends DAO<Site> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            site = mapper.readValue(response, Site.class);
-        } catch (IOException e) {
+            JSONObject json = new JSONObject(response);
+            System.out.println("Site findDAO Raw JSON Response: " + json);
+            
+	        site = new Site(json);
+
+	        System.out.println("Deserialization Successful: " + site);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return site;
@@ -96,10 +104,22 @@ public class SiteDAO extends DAO<Site> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            sites = mapper.readValue(response, new TypeReference<List<Site>>() {});
+            System.out.println("Site findAllDAO Raw JSON Response: " + response);
 
-        } catch (IOException e) {
+	        if (response == null || response.isEmpty()) {
+	            return sites;
+	        }
+
+	        JSONArray jsonArray = new JSONArray(response);
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject json = jsonArray.getJSONObject(i);
+	            Site site = new Site(json);
+	            sites.add(site); 
+	        }
+
+	        System.out.println("Managers successfully deserialized: " + sites);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

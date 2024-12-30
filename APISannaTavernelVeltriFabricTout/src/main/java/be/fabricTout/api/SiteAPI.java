@@ -13,6 +13,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import be.fabricTout.connection.FabricToutConnection;
 import be.fabricTout.dao.PurchaserDAO;
 import be.fabricTout.dao.SiteDAO;
@@ -140,6 +144,13 @@ public class SiteAPI {
             Site site = Site.find(siteDAO, id);
 
             if (site != null) {
+            	
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(site); 
+                System.out.println("Site in JSON: " + json);
+                
                 return Response
                         .status(Status.OK)
                         .entity(site)
@@ -166,6 +177,12 @@ public class SiteAPI {
             List<Site> sites = Site.findAll(siteDAO);
 
             if (sites != null && !sites.isEmpty()) {
+            	
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(sites);
+            	
                 return Response
                         .status(Status.OK)
                         .entity(sites)

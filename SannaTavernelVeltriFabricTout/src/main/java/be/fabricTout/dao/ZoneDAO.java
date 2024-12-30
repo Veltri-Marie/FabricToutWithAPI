@@ -7,9 +7,13 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.MediaType;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Zone;
 
 public class ZoneDAO extends DAO<Zone> {
@@ -80,7 +84,14 @@ public class ZoneDAO extends DAO<Zone> {
 
             ObjectMapper mapper = new ObjectMapper();
             zone = mapper.readValue(response, Zone.class);
-        } catch (IOException e) {
+            
+            JSONObject json = new JSONObject(response);
+            System.out.println("Manager findDAO Raw JSON Response: " + json);
+            
+	        zone = new Zone(json);
+
+	        System.out.println("Deserialization Successful: " + zone);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return zone;
@@ -96,9 +107,21 @@ public class ZoneDAO extends DAO<Zone> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            zones = mapper.readValue(response, new TypeReference<List<Zone>>() {});
-        } catch (IOException e) {
+            System.out.println("Zone findAllDAO Raw JSON Response: " + response);
+
+	        if (response == null || response.isEmpty()) {
+	            return zones;
+	        }
+
+	        JSONArray jsonArray = new JSONArray(response);
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject json = jsonArray.getJSONObject(i);
+	            Zone zone = new Zone(json);
+	            zones.add(zone); 
+	        }
+
+	        System.out.println("Managers successfully deserialized: " + zones);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
