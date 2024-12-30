@@ -13,6 +13,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import be.fabricTout.connection.FabricToutConnection;
 import be.fabricTout.dao.WorkerDAO;
 import be.fabricTout.dao.ZoneDAO;
@@ -140,6 +144,13 @@ public class ZoneAPI {
             Zone zone = Zone.find(zoneDAO, id);
 
             if (zone != null) {
+            	
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(zone); 
+                System.out.println("Zone in JSON: " + json);
+                
                 return Response
                         .status(Status.OK)
                         .entity(zone)
@@ -166,6 +177,12 @@ public class ZoneAPI {
             List<Zone> zones = Zone.findAll(zoneDAO);
 
             if (zones != null && !zones.isEmpty()) {
+            	
+            	ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                String json = mapper.writeValueAsString(zones);
+                
                 return Response
                         .status(Status.OK)
                         .entity(zones)

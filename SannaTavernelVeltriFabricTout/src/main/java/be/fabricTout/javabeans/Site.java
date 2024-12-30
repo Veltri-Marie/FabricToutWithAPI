@@ -67,9 +67,15 @@ public class Site implements Serializable {
     
 	public Site(JSONObject json) {
 		this();
-		setIdSite(json.optInt("idSite", -1));
-		setName(json.getString("name"));
-		setCity(json.getString("city"));
+		if (json.has("idSite")) {
+			setIdSite(json.getInt("idSite"));
+		}
+		if (json.has("name")) {
+			setName(json.getString("name"));
+		}
+		if(json.has("city")) {
+			setCity(json.getString("city"));
+		}
 		if (json.has("zones")) {
 			JSONArray zonesArray = json.getJSONArray("zones");
 			List<Zone> zones = new ArrayList<>();
@@ -78,6 +84,18 @@ public class Site implements Serializable {
 			}
 			setZones(zones);
 		}
+		if(json.has("workers")) {
+            JSONArray workersArray = json.getJSONArray("workers");
+            List<Worker> workers = new ArrayList<>();
+            for (int i = 0; i < workersArray.length(); i++) {
+                workers.add(new Worker(workersArray.getJSONObject(i)));
+            }
+            setWorkers(workers);
+		}
+		if (json.has("manager")) {
+			setManager(new Manager(json.getJSONObject("manager")));
+		}
+
 		System.out.println("Site (JSONObject json): " + json);
 
 	}

@@ -66,10 +66,15 @@ public class Zone implements Serializable {
 	
 	public Zone(JSONObject json) {
 		this();
-		setZoneId(json.optInt("zoneId", -1));
-		setLetter(Letter.valueOf(json.getString("letter")));
-		setColor(Color.valueOf(json.getString("color")));
-      
+		if (json.has("zoneId")) {
+			setZoneId(json.getInt("zoneId"));
+		}
+		if (json.has("letter")) {
+			setLetter(Letter.valueOf(json.getString("letter")));
+		}
+		if (json.has("color")) {
+			setColor(Color.valueOf(json.getString("color")));
+		}
 		if (json.has("site")) {
 			setSite(new Site(json.getJSONObject("site")));
 			site.addZone(this);
