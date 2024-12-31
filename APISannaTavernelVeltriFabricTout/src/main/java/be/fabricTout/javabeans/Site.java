@@ -16,7 +16,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.SiteDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idSite")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeySite",
+        scope = Site.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Site implements Serializable {
     
@@ -26,9 +30,7 @@ public class Site implements Serializable {
     private int idSite;
     private String name;
     private String city;
-    @JsonManagedReference
     private List<Zone> zones;
-    @JsonManagedReference
     private List<Worker> workers;
     private Manager manager;
 
@@ -132,16 +134,6 @@ public class Site implements Serializable {
     }
 
     public void setName(String name) {
-    	if (name == null)
-    		throw new IllegalArgumentException("name cannot be null");
-		if (name.isBlank())
-			throw new IllegalArgumentException("name cannot be blank");
-    	if (name.isEmpty())
-    		throw new IllegalArgumentException("name cannot be empty");
-    	if (name.length() > 50)
-    		throw new IllegalArgumentException("name cannot be longer than 50 characters");
-        if (!name.matches("[a-zA-Z0-9 ]+"))
-    		throw new IllegalArgumentException("name must contain only letters and numbers");
         this.name = name;
     }
 
@@ -149,19 +141,7 @@ public class Site implements Serializable {
         return city;
     }
 
-    public void setCity(String city) {
-    	if (city == null)
-    		throw new IllegalArgumentException("city cannot be null");
-        if (city.isBlank())
-    		throw new IllegalArgumentException("city cannot be blank");
-        if (city.isEmpty())
-    		throw new IllegalArgumentException("city cannot be empty");
-		if (city.length() > 50)
-			throw new IllegalArgumentException("city cannot be longer than 50 characters");
-		if (!city.matches("[a-zA-Z\\s]+")) { // Permet aussi les espaces
-		    throw new IllegalArgumentException("City must contain only letters and spaces.");
-		}
-									
+    public void setCity(String city) {		
         this.city = city;
     }
 

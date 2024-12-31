@@ -15,7 +15,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.ZoneDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "zoneId")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyZone",
+        scope = Zone.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Zone implements Serializable {
@@ -27,7 +31,6 @@ public class Zone implements Serializable {
     private Letter letter;
     private Color color;
     private Site site;
-    @JsonManagedReference
     private List<Machine> machines;
 
     // CONSTRUCTORS

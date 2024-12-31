@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.PurchaserDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyPurchaser",
+        scope = Purchaser.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Purchaser extends Employee implements Serializable {
 

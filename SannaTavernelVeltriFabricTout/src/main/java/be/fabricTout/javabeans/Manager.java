@@ -17,13 +17,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import be.fabricTout.dao.ManagerDAO;
 import be.fabricTout.dao.PurchaserDAO;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyManager",
+        scope = Manager.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Manager extends Employee implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
     // ATTRIBUTES
-    @JsonManagedReference
     private List<Maintenance> maintenances;
     private Site site;
 

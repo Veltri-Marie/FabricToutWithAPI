@@ -18,7 +18,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.MaintenanceDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idMaintenance")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyMaintenance",
+        scope = Maintenance.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Maintenance implements Serializable {
 
@@ -31,7 +35,6 @@ public class Maintenance implements Serializable {
     private String report;
     private Status status;
     private Machine machine;
-    @JsonManagedReference
     private List<Worker> workers;
     private Manager manager;
 

@@ -16,14 +16,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.WorkerDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPerson")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyWorker",
+        scope = Worker.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Worker extends Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     // ATTRIBUTES
-    @JsonManagedReference
     private List<Maintenance> maintenances;
     private Site site;
 

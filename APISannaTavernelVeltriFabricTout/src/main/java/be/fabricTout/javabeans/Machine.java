@@ -17,7 +17,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.MachineDAO;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idMachine")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = "KeyMachine",
+        scope = Machine.class
+    )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Machine implements Serializable {
     
@@ -28,9 +32,7 @@ public class Machine implements Serializable {
     private Type type;
     private double size;
     private State state;
-    @JsonManagedReference
     private List<Maintenance> maintenances;
-    @JsonManagedReference
     private List<Zone> zones;
 
     // CONSTRUCTORS
