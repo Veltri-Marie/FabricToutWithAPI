@@ -1,7 +1,6 @@
 package be.fabricTout.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,7 +32,6 @@ import be.fabricTout.javabeans.Worker;
 
 public class ManagerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private Connection conn;
     private MachineDAO machineDAO;
     private MaintenanceDAO maintenanceDAO;
     private WorkerDAO workerDAO;

@@ -10,12 +10,10 @@ import javax.ws.rs.core.MediaType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Site;
 
 public class SiteDAO extends DAO<Site> {

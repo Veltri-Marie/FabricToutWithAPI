@@ -1,6 +1,5 @@
 package be.fabricTout.dao;
 
-import java.sql.Connection;
 import java.util.List;
 import java.net.URI;
 import javax.ws.rs.core.UriBuilder;

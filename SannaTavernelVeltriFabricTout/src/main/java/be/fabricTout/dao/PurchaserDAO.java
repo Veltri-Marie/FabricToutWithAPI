@@ -1,6 +1,5 @@
 package be.fabricTout.dao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +9,6 @@ import javax.ws.rs.core.MediaType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Purchaser;
 
 public class PurchaserDAO extends DAO<Purchaser>{

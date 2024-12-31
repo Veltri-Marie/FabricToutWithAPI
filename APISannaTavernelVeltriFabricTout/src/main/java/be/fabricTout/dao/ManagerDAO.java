@@ -26,7 +26,6 @@ public class ManagerDAO extends DAO<Manager> {
         
     @Override
     public boolean createDAO(Manager manager) {
-    	System.out.println("ManagerDAO : createDAO");
         String sql = "{CALL create_manager(?, ?, ?, ?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, manager.getIdPerson()); 
@@ -48,7 +47,6 @@ public class ManagerDAO extends DAO<Manager> {
 
     @Override
     public boolean updateDAO(Manager manager) {
-    	System.out.println("ManagerDAO : updateDAO");
         String sql = "{CALL update_manager(?, ?, ?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
         	stmt.setString(1, manager.getFirstName());
@@ -67,7 +65,6 @@ public class ManagerDAO extends DAO<Manager> {
 
     @Override
     public boolean deleteDAO(Manager manager) {
-		System.out.println("ManagerDAO : deleteDAO");
         String sql = "{CALL delete_manager(?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, manager.getIdPerson());
@@ -80,7 +77,6 @@ public class ManagerDAO extends DAO<Manager> {
 
     @Override
     public Manager findDAO(int id) {
-        System.out.println("ManagerDAO : findDAO");
         String procedureCall = "{call find_manager(?, ?)}"; 
         Manager manager = null;
 
@@ -112,7 +108,6 @@ public class ManagerDAO extends DAO<Manager> {
 
     @Override
     public List<Manager> findAllDAO() {
-        System.out.println("ManagerDAO : findAllDAO");
         String procedureCall = "{call find_all_managers(?)}";
         List<Manager> managers = new ArrayList<>();
 
@@ -142,8 +137,6 @@ public class ManagerDAO extends DAO<Manager> {
 
     
     public Manager setManager(Object[] attributes) {
-        System.out.println("ManagerDAO : setManager");
-
         Site site = null;
         List<Zone> zones = new ArrayList<>();
 

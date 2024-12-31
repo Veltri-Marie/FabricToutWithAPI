@@ -1,6 +1,5 @@
 package be.fabricTout.dao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +9,6 @@ import javax.ws.rs.core.MediaType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.javabeans.Manager;
 

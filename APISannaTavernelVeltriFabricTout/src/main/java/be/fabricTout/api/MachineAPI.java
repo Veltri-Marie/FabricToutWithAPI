@@ -10,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +18,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.EmployeeDAO;
 import be.fabricTout.dao.MachineDAO;
 import be.fabricTout.javabeans.Machine;
 
@@ -98,9 +96,10 @@ public class MachineAPI {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(String machineJson) {
+    public Response update(@PathParam("id") int id, String machineJson) {
         try {
             JSONObject json = new JSONObject(machineJson);
             Machine machine = new Machine(json);
@@ -143,7 +142,6 @@ public class MachineAPI {
                 mapper.registerModule(new JavaTimeModule());
 
                 String json = mapper.writeValueAsString(machine);
-                System.out.println("MachineAPI.find()Serialization: \n" + json);
                 
                 return Response
                         .status(Status.OK)
@@ -168,7 +166,6 @@ public class MachineAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         try {
-        	System.out.println("API: MachineAPI.findAll()");
             List<Machine> machines = Machine.findAll(machineDAO);
 
             if (machines != null && !machines.isEmpty()) {
@@ -176,14 +173,11 @@ public class MachineAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(machines);
-                System.out.println("JSON de machineAPI :" + json);
-                System.out.println("Status.OK");
                 return Response
                         .status(Status.OK)
                         .entity(json)
                         .build();
             } else {
-            	System.out.println("Status NOT FOUND");
             	return Response
                         .status(Status.NOT_FOUND)
                         .entity("No machines found")
@@ -191,7 +185,6 @@ public class MachineAPI {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Status Exception");
             
             return Response
                     .status(Status.INTERNAL_SERVER_ERROR)

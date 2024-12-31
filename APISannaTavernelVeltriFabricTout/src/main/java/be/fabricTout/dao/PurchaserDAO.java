@@ -5,7 +5,6 @@ import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -26,7 +25,6 @@ public class PurchaserDAO extends DAO<Purchaser> {
 			
 	@Override
 	public boolean createDAO(Purchaser purchaser) {
-		System.out.println("PurchaserDAO : createDAO");
 	    String sql = "{CALL create_purchaser(?, ?, ?, ?, ?, ?, ?)}";
 	    try (CallableStatement stmt = connection.prepareCall(sql)) {
 	        stmt.setInt(1, purchaser.getIdPerson()); 
@@ -48,7 +46,6 @@ public class PurchaserDAO extends DAO<Purchaser> {
 	
 	@Override
 	public boolean updateDAO(Purchaser purchaser) {
-		System.out.println("PurchaserDAO : updateDAO");
 	    String sql = "{CALL update_purchaser(?, ?, ?, ?, ?, ?, ?)}";
 	    try (CallableStatement stmt = connection.prepareCall(sql)) {
 	        stmt.setInt(1, purchaser.getIdPerson());
@@ -68,7 +65,6 @@ public class PurchaserDAO extends DAO<Purchaser> {
 
     @Override
     public boolean deleteDAO(Purchaser purchaser) {
-    	System.out.println("PurchaserDAO : deleteDAO");
     	String sql = "{CALL delete_purchaser(?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, purchaser.getIdPerson());
@@ -82,7 +78,6 @@ public class PurchaserDAO extends DAO<Purchaser> {
 	
     @Override
     public Purchaser findDAO(int id) {
-        System.out.println("PurchaserDAO : findDAO");
         String procedureCall = "{call find_purchaser(?, ?)}"; 
         Purchaser purchaser = null;
 
@@ -115,7 +110,6 @@ public class PurchaserDAO extends DAO<Purchaser> {
 
     @Override
     public List<Purchaser> findAllDAO() {
-        System.out.println("PurchaserDAO : findAllDAO");
         String procedureCall = "{call find_all_purchasers(?)}"; 
         List<Purchaser> purchasers = new ArrayList<>();
 
@@ -144,9 +138,7 @@ public class PurchaserDAO extends DAO<Purchaser> {
     }
 
 	
-    private Purchaser setPurchaser(Object[] attributes) throws SQLException {
-        System.out.println("PurchaserDAO : setPurchaser");
-        
+    private Purchaser setPurchaser(Object[] attributes) throws SQLException {        
         Timestamp timestamp1 = (Timestamp) attributes[3]; 
 	    String birthDateStr = timestamp1.toLocalDateTime().toLocalDate().toString(); 
 	    LocalDate birthDate = LocalDate.parse(birthDateStr);

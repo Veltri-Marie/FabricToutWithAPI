@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.ManagerDAO;
 import be.fabricTout.dao.PurchaserDAO;
 import be.fabricTout.javabeans.Purchaser;
 

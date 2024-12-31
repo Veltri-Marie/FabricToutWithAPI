@@ -23,7 +23,6 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public boolean createDAO(Site site) {
-        System.out.println("SiteDAO : createDAO");
         String procedureCall = "{call add_site(?, ?, ?)}"; 
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
 
@@ -47,7 +46,6 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public boolean deleteDAO(Site site) {
-    	System.out.println("SiteDAO : deleteDAO");
     	String procedureCall = "{call delete_site(?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, site.getIdSite()); 
@@ -62,7 +60,6 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public boolean updateDAO(Site site) {
-    	System.out.println("SiteDAO : updateDAO");
     	String procedureCall = "{call update_site(?, ?, ?, ?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, site.getIdSite());
@@ -81,7 +78,6 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public Site findDAO(int id) {
-        System.out.println("SiteDAO : findDAO");
         String procedureCall = "{call find_site(?, ?)}";  
         Site site = null;
 
@@ -114,7 +110,6 @@ public class SiteDAO extends DAO<Site> {
 
     @Override
     public List<Site> findAllDAO() {
-        System.out.println("SiteDAO : findAllDAO");
         String procedureCall = "{call find_all_sites(?)}"; 
         List<Site> sites = new ArrayList<>();
 
@@ -143,16 +138,10 @@ public class SiteDAO extends DAO<Site> {
     }
 
     private Site setSiteDAO(Object[] attributes) throws SQLException {
-        System.out.println("SiteDAO : setSiteDAO");
         Site site = null; 
         Zone zone = null;
         List<Zone> zones = new ArrayList<>();
-        
-        System.out.println("Nombre d'attributs : " + attributes.length);
-        for (int i = 0; i < attributes.length; i++) {
-            System.out.println("Attribut " + i + ": " + attributes[i] + " (Type: " + attributes[i].getClass().getName() + ")");
-        }
-        
+
         String zoneList = (String) attributes[10];
         if (zoneList != null && !zoneList.isEmpty()) {
             int counter = 0;

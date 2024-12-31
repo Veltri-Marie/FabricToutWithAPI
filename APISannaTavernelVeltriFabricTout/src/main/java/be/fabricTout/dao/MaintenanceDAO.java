@@ -5,14 +5,12 @@ import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import oracle.sql.STRUCT;
 
@@ -36,7 +34,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public boolean createDAO(Maintenance maintenance) {
-        System.out.println("MaintenanceDAO : createDAO");
         String procedureCall = "{call add_maintenance(?, ?, ?, ?, ?, ?, ?, ?)}"; 
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
 
@@ -53,7 +50,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
                     maintenance.getWorkers().stream()
                             .map(worker -> String.valueOf(worker.getIdPerson()))
                             .toArray(String[]::new));
-            System.out.println("WorkerIds : " + workerIds);
             stmt.setString(8, workerIds); 
 
             stmt.execute();
@@ -72,7 +68,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public boolean deleteDAO(Maintenance maintenance) {
-    	System.out.println("MaintenanceDAO : deleteDAO");
         String procedureCall = "{call delete_maintenance(?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, maintenance.getIdMaintenance());
@@ -86,7 +81,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public boolean updateDAO(Maintenance maintenance) {
-        System.out.println("MaintenanceDAO : updateDAO");
 
         String procedureCall = "{call update_maintenance(?, ?, ?, ?, ?, ?, ?, ?)}"; 
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
@@ -106,7 +100,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
             stmt.setString(8, workerIds); 
 
             stmt.execute();
-            System.out.println("Maintenance mise à jour avec succès.");
             return true;
 
         } catch (SQLException e) {
@@ -118,7 +111,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public Maintenance findDAO(int id) {
-        System.out.println("MaintenanceDAO : findDAO");
         String procedureCall = "{call find_maintenance(?, ?)}";  
         Maintenance maintenance = null;
 
@@ -141,9 +133,7 @@ public class MaintenanceDAO extends DAO<Maintenance> {
                         }
                     }
                 }
-            } else {
-                System.out.println("Aucune donnée récupérée dans la collection.");
-            }
+            } 
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -152,7 +142,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public List<Maintenance> findAllDAO() {
-        System.out.println("MaintenanceDAO : findAllDAO");
         String procedureCall = "{call find_all_maintenances(?)}";
         List<Maintenance> maintenances = new ArrayList<>();
         
@@ -182,7 +171,6 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
 
     private Maintenance setMaintenanceDAO(Object[] attributes) throws SQLException {
-        System.out.println("SetMaintenanceDAO");
         Maintenance maintenance = null;
 
         Timestamp timestamp = (Timestamp) attributes[1]; 

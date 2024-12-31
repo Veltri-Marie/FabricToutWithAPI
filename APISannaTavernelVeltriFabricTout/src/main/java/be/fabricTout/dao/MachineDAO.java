@@ -9,7 +9,6 @@ import be.fabricTout.javabeans.Site;
 import be.fabricTout.javabeans.State;
 import be.fabricTout.javabeans.Status;
 import be.fabricTout.javabeans.Type;
-import be.fabricTout.javabeans.Worker;
 import be.fabricTout.javabeans.Zone;
 import oracle.jdbc.OracleTypes;
 import oracle.sql.STRUCT;
@@ -31,7 +30,6 @@ public class MachineDAO extends DAO<Machine> {
 	
     @Override
 	public boolean createDAO(Machine machine) {
-	    System.out.println("MachineDAO : createDAO");
 	    String sql = "{CALL create_machine(?, ?, ?, ?, ?)}"; 
 	    try (CallableStatement stmt = connection.prepareCall(sql)) {
 	        stmt.registerOutParameter(1, Types.INTEGER); 
@@ -62,7 +60,6 @@ public class MachineDAO extends DAO<Machine> {
 
     @Override
     public boolean updateDAO(Machine machine) {
-        System.out.println("MachineDAO : updateDAO");
         String sql = "{CALL update_machine(?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, machine.getIdMachine());
@@ -86,7 +83,6 @@ public class MachineDAO extends DAO<Machine> {
 
     @Override
     public boolean deleteDAO(Machine machine) {
-        System.out.println("MachineDAO : deleteDAO");
         String sql = "{CALL delete_machine(?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, machine.getIdMachine());
@@ -101,7 +97,6 @@ public class MachineDAO extends DAO<Machine> {
 
     @Override
     public Machine findDAO(int id) {
-        System.out.println("MachineDAO : findDAO");
         String sql = "{CALL find_machine(?, ?)}";  
         Machine machine = null;
 
@@ -133,7 +128,6 @@ public class MachineDAO extends DAO<Machine> {
 
     @Override
     public List<Machine> findAllDAO() {
-        System.out.println("MachineDAO : findAllDAO");
         String sql = "{CALL find_all_machines(?)}";  
         List<Machine> machines = new ArrayList<>();
 
@@ -161,7 +155,6 @@ public class MachineDAO extends DAO<Machine> {
     }
 
     private Machine setMachineDAO(Object[] attributes) {
-        System.out.println("MachineDAO : setMachineDAO");
         Machine machine = null;
         Site site = null;
         
@@ -174,7 +167,6 @@ public class MachineDAO extends DAO<Machine> {
 	    String birthDateStr = timestamp.toLocalDateTime().toLocalDate().toString(); 
 	    LocalDate birthDate = LocalDate.parse(birthDateStr);
 	    
-        // Création du Manager
         Manager manager = new Manager(
         		((BigDecimal) attributes[9]).intValue(), // manager_id
                 (String) attributes[10], // manager_firstName
@@ -187,7 +179,7 @@ public class MachineDAO extends DAO<Machine> {
         );
 
         List<Zone> zones = new ArrayList<>();
-        String zoneList = (String) attributes[4]; // zone_list
+        String zoneList = (String) attributes[4];
         if (zoneList != null && !zoneList.isEmpty()) {
             String[] zoneEntries = zoneList.split(",");
             for (String entry : zoneEntries) {

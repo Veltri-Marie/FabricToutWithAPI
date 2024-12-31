@@ -39,7 +39,6 @@ public class Purchaser extends Employee implements Serializable {
 	
 	public Purchaser(JSONObject json) {
 		super(json);
-		System.out.println("Purchaser (JSONObject json): " + json);
 
 	}
     

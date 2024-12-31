@@ -5,7 +5,6 @@ import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -32,7 +31,6 @@ public class WorkerDAO extends DAO<Worker> {
 	
     @Override
     public boolean createDAO(Worker worker) {
-    	System.out.println("WorkerDAO : createDAO");
         String sql = "{CALL create_worker(?, ?, ?, ?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setString(1, worker.getFirstName());
@@ -54,7 +52,6 @@ public class WorkerDAO extends DAO<Worker> {
 
     @Override
     public boolean updateDAO(Worker worker) {
-    	System.out.println("WorkerDAO : updateDAO");
         String sql = "{CALL update_worker(?, ?, ?, ?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, worker.getIdPerson());
@@ -74,7 +71,6 @@ public class WorkerDAO extends DAO<Worker> {
 
     @Override
     public boolean deleteDAO(Worker worker) {
-    	System.out.println("WorkerDAO : deleteDAO");
         String sql = "{CALL delete_worker(?)}";
         try (CallableStatement stmt = connection.prepareCall(sql)) {
             stmt.setInt(1, worker.getIdPerson());
@@ -88,7 +84,6 @@ public class WorkerDAO extends DAO<Worker> {
 
     @Override
     public Worker findDAO(int id) {
-        System.out.println("WorkerDAO : findDAO");
         String sql = "{CALL find_worker(?, ?)}"; 
         Worker worker = null;
 
@@ -113,9 +108,7 @@ public class WorkerDAO extends DAO<Worker> {
                         }
                     }
                 }
-            } else {
-                System.out.println("No worker found with ID: " + id);
-            }
+            } 
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,7 +117,6 @@ public class WorkerDAO extends DAO<Worker> {
 
     @Override
     public List<Worker> findAllDAO() {
-        System.out.println("WorkerDAO : findAllWorkers");
         String sql = "{CALL find_all_workers(?)}";  
         List<Worker> workers = new ArrayList<>();
 
@@ -133,15 +125,10 @@ public class WorkerDAO extends DAO<Worker> {
             stmt.execute();
 
             Array array = stmt.getArray(1);
-            System.out.println("Array : " + array);
-
             if (array != null) {
                 Object[] workerObjects = (Object[]) array.getArray();
-                System.out.println("workerObjects : " + workerObjects);
 
                 for (Object obj : workerObjects) {
-                    System.out.println("Obj : " + obj);
-
                     if (obj instanceof STRUCT) {
                         STRUCT struct = (STRUCT) obj;
 
@@ -152,12 +139,8 @@ public class WorkerDAO extends DAO<Worker> {
                             Worker worker = setWorker(attributes);  
                             workers.add(worker);  
                         }
-                    } else {
-                        System.out.println("Unexpected object type: " + obj.getClass().getName());
                     }
                 }
-            } else {
-                System.out.println("No workers found in the array.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,7 +150,6 @@ public class WorkerDAO extends DAO<Worker> {
 
     
 	public Worker setWorker(Object[] attributes) {
-	    System.out.println("WorkerDAO : setWorker");
 
 	    Site site = null;
 	    

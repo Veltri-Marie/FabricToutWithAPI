@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.MachineDAO;
 import be.fabricTout.dao.MaintenanceDAO;
 import be.fabricTout.javabeans.Maintenance;
 
@@ -102,7 +101,6 @@ public class MaintenanceAPI {
     public Response update(@PathParam("id") int id, String maintenanceJson) {
         try {
             JSONObject json = new JSONObject(maintenanceJson);
-            System.out.println("json: " + json);
             Maintenance maintenance = new Maintenance(json);
 
             if (maintenance.update(maintenanceDAO)) {

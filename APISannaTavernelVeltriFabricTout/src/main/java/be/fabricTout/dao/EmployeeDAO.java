@@ -15,7 +15,6 @@ public class EmployeeDAO extends DAO<Employee> {
     }
     
 	public int authenticateDAO(String registrationCode, String password) {
-    	System.out.println("EmployeeDAO : authenticateDAO");
         String procedureCall = "{call authenticate_employee(?, ?, ?)}";
         try (CallableStatement stmt = connect.prepareCall(procedureCall)) {
             stmt.setString(1, registrationCode);

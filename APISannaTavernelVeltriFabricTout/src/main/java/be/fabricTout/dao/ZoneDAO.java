@@ -22,7 +22,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     @Override
     public boolean createDAO(Zone zone) {
-        System.out.println("ZoneDAO : createDAO");
         String procedureCall = "{call add_zone(?, ?, ?, ?)}"; 
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
 
@@ -47,7 +46,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     @Override
     public boolean deleteDAO(Zone zone) {
-    	System.out.println("ZoneDAO : deleteDAO");
         String procedureCall = "{call delete_zone(?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, zone.getZoneId());
@@ -61,7 +59,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     @Override
     public boolean updateDAO(Zone zone) {
-    	System.out.println("ZoneDAO : updateDAO");
         String procedureCall = "{call update_zone(?, ?, ?, ?, ?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, zone.getZoneId());
@@ -79,7 +76,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     @Override
     public Zone findDAO(int id) {
-        System.out.println("ZoneDAO : findDAO");
         String procedureCall = "{call find_zone(?, ?)}";
         try (CallableStatement stmt = this.connect.prepareCall(procedureCall)) {
             stmt.setInt(1, id);
@@ -110,7 +106,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     @Override
     public List<Zone> findAllDAO() {
-        System.out.println("ZoneDAO : findAllDAO");
         String procedureCall = "{call find_all_zones(?)}";
         List<Zone> zones = new ArrayList<>();
         
@@ -140,8 +135,6 @@ public class ZoneDAO extends DAO<Zone> {
 
     
     public Zone setZone(Object[] attributes) throws SQLException {
-        System.out.println("ZoneDAO : setZone");
-
         Zone zone = new Zone(
             ((BigDecimal) attributes[0]).intValue(),  // zone_id
             Letter.valueOf(((String) attributes[1]).toUpperCase()),  // letter

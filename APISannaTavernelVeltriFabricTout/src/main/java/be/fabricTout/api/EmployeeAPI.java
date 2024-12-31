@@ -34,10 +34,8 @@ public class EmployeeAPI {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response authenticate(String employeeJson) {
-        System.out.println("API: EmployeeAPI.authenticate()");
         try {
             JSONObject json = new JSONObject(employeeJson);
-            System.out.println("Received JSON: " + json);
 
             if (!json.has("registrationCode") || !json.has("password")) {
                 return Response
@@ -81,7 +79,6 @@ public class EmployeeAPI {
     @Path("/type/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByTypeId(@PathParam("id") int id) {
-        System.out.println("API: EmployeeAPI.findByTypeId() for ID: " + id);
         try {
             String employeeType = Employee.findTypeById(employeeDAO, id);
 

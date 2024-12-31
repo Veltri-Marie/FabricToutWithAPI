@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import be.fabricTout.javabeans.Machine;
 import be.fabricTout.javabeans.Maintenance;
 
 import java.io.IOException;
@@ -15,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

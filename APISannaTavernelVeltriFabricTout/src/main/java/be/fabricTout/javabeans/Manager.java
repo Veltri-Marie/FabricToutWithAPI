@@ -8,14 +8,11 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import be.fabricTout.dao.ManagerDAO;
-import be.fabricTout.dao.PurchaserDAO;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.IntSequenceGenerator.class,

@@ -14,7 +14,6 @@ public class FabricToutConnection {
             String password = context.getInitParameter("db.password");
 
             System.out.println("Tentative de connexion à la base de données...");
-            System.out.println("URL: " + url);
 
             Class.forName("oracle.jdbc.OracleDriver");
 

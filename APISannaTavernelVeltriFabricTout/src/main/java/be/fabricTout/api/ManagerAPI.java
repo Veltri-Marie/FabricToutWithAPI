@@ -10,14 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.MaintenanceDAO;
 import be.fabricTout.dao.ManagerDAO;
 import be.fabricTout.javabeans.Manager;
 
@@ -40,7 +37,6 @@ public class ManagerAPI {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") int id) {
-        System.out.println("ManagerAPI.find() called");
         try {
             Manager manager = Manager.find(managerDAO, id);
 
@@ -49,7 +45,6 @@ public class ManagerAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(manager); 
-                System.out.println("Manager in JSON: " + json);
                 return Response
                         .status(Status.OK)
                         .entity(json)

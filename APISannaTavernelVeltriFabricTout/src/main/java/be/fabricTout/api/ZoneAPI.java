@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.WorkerDAO;
 import be.fabricTout.dao.ZoneDAO;
 import be.fabricTout.javabeans.Zone;
 
@@ -100,8 +99,10 @@ public class ZoneAPI {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(String zoneJson) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") int id,String zoneJson) {
         try {
             JSONObject json = new JSONObject(zoneJson);
             Zone zone = new Zone(json);
@@ -140,7 +141,6 @@ public class ZoneAPI {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") int id) {
-    	System.out.println("**API: ZoneAPI.find() for ID: " + id);
         try {
             Zone zone = Zone.find(zoneDAO, id);
 
@@ -150,7 +150,6 @@ public class ZoneAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(zone); 
-                System.out.println("Zone in JSON: " + json);
                 
                 return Response
                         .status(Status.OK)

@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.connection.FabricToutConnection;
-import be.fabricTout.dao.PurchaserDAO;
 import be.fabricTout.dao.SiteDAO;
 import be.fabricTout.javabeans.Site;
 
@@ -100,8 +99,10 @@ public class SiteAPI {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(String siteJson) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") int id, String siteJson) {
         try {
             JSONObject json = new JSONObject(siteJson);
             Site site = new Site(json);
@@ -149,7 +150,6 @@ public class SiteAPI {
                 mapper.registerModule(new JavaTimeModule());
                 mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(site); 
-                System.out.println("Site in JSON: " + json);
                 
                 return Response
                         .status(Status.OK)

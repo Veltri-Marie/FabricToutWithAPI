@@ -77,7 +77,6 @@ public abstract class Person implements Serializable {
 		            try {
 		            	setBirthDate(LocalDate.parse((String) dateObject));
 		            } catch (Exception e) {
-		                System.err.println("Erreur lors de l'analyse de la date : " + dateObject);
 		                e.printStackTrace();
 		            }
 		        }
