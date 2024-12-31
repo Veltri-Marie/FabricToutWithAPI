@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Site;
@@ -26,6 +28,8 @@ public class SiteDAO extends DAO<Site> {
     public boolean createDAO(Site site) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(site);
 
             String response = getResource()
@@ -59,6 +63,8 @@ public class SiteDAO extends DAO<Site> {
     public boolean updateDAO(Site site) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(site);
 
             String response = getResource()

@@ -4,12 +4,16 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import be.fabricTout.javabeans.Machine;
 import be.fabricTout.javabeans.Maintenance;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +30,8 @@ public class MaintenanceDAO extends DAO<Maintenance> {
     public boolean createDAO(Maintenance maintenance) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(maintenance);
 
             String response = getResource()
@@ -57,8 +63,11 @@ public class MaintenanceDAO extends DAO<Maintenance> {
 
     @Override
     public boolean updateDAO(Maintenance maintenance) {
+    	System.out.println("MaintenanceDAO.update in client");
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(maintenance);
 
             String response = getResource()
@@ -82,11 +91,11 @@ public class MaintenanceDAO extends DAO<Maintenance> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            maintenance = mapper.readValue(response, Maintenance.class);
-        } catch (IOException e) {
+            JSONObject json = new JSONObject (response);
+            
+            
+            maintenance = new Maintenance(json);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return maintenance;
@@ -102,11 +111,14 @@ public class MaintenanceDAO extends DAO<Maintenance> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            maintenances = mapper.readValue(response, new TypeReference<List<Maintenance>>() {});
-        } catch (IOException e) {
+            JSONArray jsonArray = new JSONArray(response);
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject json = jsonArray.getJSONObject(i);
+	            Maintenance maintenance = new Maintenance(json);
+	            maintenances.add(maintenance); 
+	        }
+	        
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

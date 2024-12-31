@@ -143,11 +143,11 @@ public class MachineAPI {
                 mapper.registerModule(new JavaTimeModule());
 
                 String json = mapper.writeValueAsString(machine);
-                System.out.println(json);	
+                System.out.println("MachineAPI.find()Serialization: \n" + json);
                 
                 return Response
                         .status(Status.OK)
-                        .entity(machine)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -180,7 +180,7 @@ public class MachineAPI {
                 System.out.println("Status.OK");
                 return Response
                         .status(Status.OK)
-                        .entity(machines)
+                        .entity(json)
                         .build();
             } else {
             	System.out.println("Status NOT FOUND");

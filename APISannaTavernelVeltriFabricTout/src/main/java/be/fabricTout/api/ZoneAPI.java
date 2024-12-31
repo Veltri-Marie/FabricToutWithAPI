@@ -154,7 +154,7 @@ public class ZoneAPI {
                 
                 return Response
                         .status(Status.OK)
-                        .entity(zone)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -186,7 +186,7 @@ public class ZoneAPI {
                 
                 return Response
                         .status(Status.OK)
-                        .entity(zones)
+                        .entity(json)
                         .build();
             } else {
                 return Response

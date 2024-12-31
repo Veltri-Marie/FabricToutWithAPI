@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import be.fabricTout.javabeans.Manager;
 import be.fabricTout.javabeans.Zone;
@@ -26,6 +28,8 @@ public class ZoneDAO extends DAO<Zone> {
     public boolean createDAO(Zone zone) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(zone);
 
             String response = getResource()
@@ -59,6 +63,8 @@ public class ZoneDAO extends DAO<Zone> {
     public boolean updateDAO(Zone zone) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(zone);
 
             String response = getResource()
@@ -82,9 +88,7 @@ public class ZoneDAO extends DAO<Zone> {
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
 
-            ObjectMapper mapper = new ObjectMapper();
-            zone = mapper.readValue(response, Zone.class);
-            
+                       
             JSONObject json = new JSONObject(response);
             System.out.println("Manager findDAO Raw JSON Response: " + json);
             

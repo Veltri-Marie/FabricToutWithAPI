@@ -153,7 +153,7 @@ public class SiteAPI {
                 
                 return Response
                         .status(Status.OK)
-                        .entity(site)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -185,7 +185,7 @@ public class SiteAPI {
             	
                 return Response
                         .status(Status.OK)
-                        .entity(sites)
+                        .entity(json)
                         .build();
             } else {
                 return Response

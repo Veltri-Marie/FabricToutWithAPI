@@ -28,6 +28,8 @@ public class MachineDAO extends DAO<Machine> {
     public boolean createDAO(Machine machine) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(machine);
 
             String response = getResource()
@@ -61,6 +63,8 @@ public class MachineDAO extends DAO<Machine> {
     public boolean updateDAO(Machine machine) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             String json = mapper.writeValueAsString(machine);
 
             String response = getResource()
@@ -83,11 +87,9 @@ public class MachineDAO extends DAO<Machine> {
                     .path("machine/" + id)
                     .accept(MediaType.APPLICATION_JSON)
                     .get(String.class);
-            
-            System.out.println(response);
-            
+           
             JSONObject json = new JSONObject (response);
-            
+                        
             machine = new Machine(json);
             
         } catch (Exception e) {

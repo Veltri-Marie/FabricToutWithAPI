@@ -13,6 +13,10 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import be.fabricTout.connection.FabricToutConnection;
 import be.fabricTout.dao.MachineDAO;
 import be.fabricTout.dao.MaintenanceDAO;
@@ -92,11 +96,13 @@ public class MaintenanceAPI {
     }
 
     @PUT
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(String maintenanceJson) {
+    public Response update(@PathParam("id") int id, String maintenanceJson) {
         try {
             JSONObject json = new JSONObject(maintenanceJson);
+            System.out.println("json: " + json);
             Maintenance maintenance = new Maintenance(json);
 
             if (maintenance.update(maintenanceDAO)) {
@@ -130,11 +136,16 @@ public class MaintenanceAPI {
     public Response find(@PathParam("id") int id) {
         try {
             Maintenance maintenance = Maintenance.find(maintenanceDAO, id);
-
+           
             if (maintenance != null) {
+            	ObjectMapper mapper = new ObjectMapper();
+            	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                mapper.registerModule(new JavaTimeModule());
+
+                String json = mapper.writeValueAsString(maintenance);
                 return Response
                         .status(Status.OK)
-                        .entity(maintenance)
+                        .entity(json)
                         .build();
             } else {
                 return Response
@@ -158,9 +169,14 @@ public class MaintenanceAPI {
             List<Maintenance> maintenances = Maintenance.findAll(maintenanceDAO);
 
             if (maintenances != null && !maintenances.isEmpty()) {
+            	ObjectMapper mapper = new ObjectMapper();
+            	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                mapper.registerModule(new JavaTimeModule());
+
+                String json = mapper.writeValueAsString(maintenances);
                 return Response
                         .status(Status.OK)
-                        .entity(maintenances)
+                        .entity(json)
                         .build();
             } else {
                 return Response

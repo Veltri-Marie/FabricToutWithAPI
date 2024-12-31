@@ -27,6 +27,7 @@ public abstract class Person implements Serializable {
     protected int idPerson;
     protected String firstName;
     protected String lastName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     protected LocalDate birthDate;
     protected String phoneNumber;
 

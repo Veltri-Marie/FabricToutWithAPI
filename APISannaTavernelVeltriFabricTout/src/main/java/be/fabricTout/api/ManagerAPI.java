@@ -78,8 +78,8 @@ public class ManagerAPI {
 
             if (managers != null && !managers.isEmpty()) {
             	ObjectMapper mapper = new ObjectMapper();
+            	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 mapper.registerModule(new JavaTimeModule());
-                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                 String json = mapper.writeValueAsString(managers);
                 return Response
                         .status(Status.OK)

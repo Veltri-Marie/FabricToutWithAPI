@@ -202,7 +202,6 @@ public class MachineDAO extends DAO<Machine> {
                             (String) attributes[8] // site_city
                     );
                     zones.add(zone);
-                    System.out.println("++++++++++++++++++++++Zone: " + zone);
                     site = zone.getSite();
                     site.setManager(manager);
                 }
