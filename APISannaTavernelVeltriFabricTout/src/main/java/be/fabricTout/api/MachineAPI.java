@@ -47,24 +47,22 @@ public class MachineAPI {
             if (machine.create(machineDAO)) {
                 return Response
                         .status(Status.CREATED)
+                        .header("Location", "machine/" + machine.getIdMachine())
                         .entity(new JSONObject().put("idMachine", machine.getIdMachine()).toString())
                         .build();
             } else {
                 return Response
                         .status(Status.INTERNAL_SERVER_ERROR)
-                        .entity("Failed to create machine")
                         .build();
             }
         } catch (JSONException e) {
             return Response
                     .status(Status.BAD_REQUEST)
-                    .entity("Invalid JSON format: " + e.getMessage())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response
                     .status(Status.INTERNAL_SERVER_ERROR)
-                    .entity("An unexpected error occurred")
                     .build();
         }
     }
@@ -96,7 +94,7 @@ public class MachineAPI {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") int id, String machineJson) {
